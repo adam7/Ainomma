@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ainomma</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <link href="Content/ionic.css" rel="stylesheet">
+    <script src="scripts/ionic.bundle.js"></script>
+    <script src="scripts/firebase.js"></script>
+    <script src="scripts/angularfire.js"></script>
+    <script src="scripts/app/app.js"></script>
+</head>
+<body ng-app="news">
+    <ion-side-menus>
+
+        <!-- Main content -->
+        <ion-side-menu-content>
+            <ion-nav-bar class="bar-dark">
+            </ion-nav-bar>
+            <ion-nav-view  name="home"></ion-nav-view>          
+        </ion-side-menu-content>
+
+        <!-- Left menu -->
+        <ion-side-menu side="left">
+            <ion-header-bar class="bar-dark">
+                <h1 class="title">Options</h1>
+            </ion-header-bar>
+            <ion-content>
+                <ion-list>
+                    <a class="item item-icon-left" href="#/top">
+                        <i class="icon ion-podium"></i>Top
+                    </a>
+                    <a class="item item-icon-left" href="#/new">
+                        <i class="icon ion-android-inbox"></i>New
+                    </a>
+                    <a class="item item-icon-left" href="#/help">
+                        <i class="icon ion-help-circled"></i>Ask
+                    </a>
+                    <a class="item item-icon-left" href="#/polls">
+                        <i class="icon ion-stats-bars"></i>Polls
+                    </a>
+                    <a class="item item-icon-left" href="#/jobs">
+                        <i class="icon ion-ios7-calculator"></i>Jobs
+                    </a>
+                    <a class="item item-icon-left" href="#/users">
+                        <i class="icon ion-person-stalker"></i>Users
+                    </a>
+                </ion-list>
+            </ion-content>
+        </ion-side-menu>
+    </ion-side-menus>
+
+    <script type="text/ng-template" id="home.html">
+        <ion-view title="Front Page">
+            <ion-content>
+                <!-- A list of news items: -->
+                <ion-list>
+                    <div class="list card" ng-repeat="item in items">
+                        <a class="item item-icon-left" href="{{ item.url }}">
+                            <h2>{{ item.title }}</h2>
+                            <p>{{ item.url }}</p>
+                        </a>
+                        <div class="item">
+                            <p>{{ item.score }} points by {{ item.by }}</p>
+                            <a class="subdued" href="#/{{ item.id }}">
+                                <i class="icon ion-chatboxes "></i>
+                                {{ item.kids.length }} Comments
+                            </a>
+                        </div>
+                    </div>
+                </ion-list>
+            </ion-content>
+        </ion-view>
+    </script>
+
+    <script type="text/ng-template" id="help.html">
+        <ion-view title="Help">
+            <ion-content>
+                <p>This is some help text, just saying</p>
+            </ion-content>
+        </ion-view>
+    </script>
+</body>
+</html>
