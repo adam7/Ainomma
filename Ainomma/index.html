@@ -12,12 +12,11 @@
 </head>
 <body ng-app="news">
     <ion-side-menus>
-
         <!-- Main content -->
         <ion-side-menu-content>
             <ion-nav-bar class="bar-dark">
             </ion-nav-bar>
-            <ion-nav-view  name="home"></ion-nav-view>          
+            <ion-nav-view></ion-nav-view>
         </ion-side-menu-content>
 
         <!-- Left menu -->
@@ -33,7 +32,7 @@
                     <a class="item item-icon-left" href="#/new">
                         <i class="icon ion-android-inbox"></i>New
                     </a>
-                    <a class="item item-icon-left" href="#/help">
+                    <a class="item item-icon-left" href="#/ask">
                         <i class="icon ion-help-circled"></i>Ask
                     </a>
                     <a class="item item-icon-left" href="#/polls">
@@ -44,6 +43,9 @@
                     </a>
                     <a class="item item-icon-left" href="#/users">
                         <i class="icon ion-person-stalker"></i>Users
+                    </a>
+                    <a class="item item-icon-left" href="#/about">
+                        <i class="icon ion-ios7-information"></i>About
                     </a>
                 </ion-list>
             </ion-content>
@@ -62,9 +64,8 @@
                         </a>
                         <div class="item">
                             <p>{{ item.score }} points by {{ item.by }}</p>
-                            <a class="subdued" href="#/{{ item.id }}">
-                                <i class="icon ion-chatboxes "></i>
-                                {{ item.kids.length }} Comments
+                            <a class="subdued" href="#/item/{{ item.id }}" >
+                                <i class="icon ion-chatboxes "></i>{{ item.kids.length }} comments
                             </a>
                         </div>
                     </div>
@@ -73,10 +74,32 @@
         </ion-view>
     </script>
 
-    <script type="text/ng-template" id="help.html">
-        <ion-view title="Help">
+    <script type="text/ng-template" id="item.html">
+        <ion-view title="{{ title }}">
             <ion-content>
-                <p>This is some help text, just saying</p>
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <p>{{ description }}fd</p>
+                    </div>
+                </div>
+                <!-- A list of comments: -->
+                <ion-list>
+                    <div class="list card" ng-repeat="comment in comments">
+                    </div>
+                </ion-list>
+            </ion-content>
+        </ion-view>
+    </script>
+
+    <script type="text/ng-template" id="about.html">
+        <ion-view title="About">
+            <ion-content>
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <p>Ainnoma is a client for the <a href="https://news.ycomninator.com">Hacker News</a> website.</p>
+                        <p>It was written by Adam Cooper.</p>
+                    </div>
+                </div>
             </ion-content>
         </ion-view>
     </script>
