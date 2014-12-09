@@ -1,5 +1,6 @@
 ﻿var app = angular.module('news', ['firebase', 'ionic']);
 
+// Routing
 
 app.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/')
@@ -20,12 +21,38 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         templateUrl: 'item.html',
         controller: 'ItemController',
         resolve: {
-            // TODO: Need to resolve the todo with a service from here ... 
+            // TODO: Need to resolve the item with a service from here so that title etc. get updated!
+            item: function ($stateParams, ItemsService) {
+                return ItemsService.getItem($stateParams.itemId);
+            }
         }
     })
 })
 
+// Services
+app.factory('ItemsService', function($q){
+    getItem = function (id) {
+        var dfd = $q.defer();
 
+        var item;
+        var ref = new Firebase("https://hacker-news.firebaseio.com/v0/item/" + id);
+
+        ref.once("value", onGetItem);
+
+        function onGetItem(data) {
+            dfd.resolve(data.val());
+        }    
+        return dfd.promise;
+    }
+    
+    return {
+        getItem: getItem
+    }
+});
+
+
+
+// Controllers
 app.controller('FrontPageController', ['$firebase', '$scope', '$ionicLoading', function ($firebase, $scope, $ionicLoading) {
 
     //$ionicLoading.show({
@@ -52,27 +79,12 @@ app.controller('FrontPageController', ['$firebase', '$scope', '$ionicLoading', f
     }
 }]);
 
-app.controller('ItemController', ['$firebase', '$scope', '$stateParams', function ($firebase, $scope, $stateParams) {
-    var itemId = $stateParams.itemId;
+app.controller('ItemController', function ($scope, item) {
+    console.log(item);
 
-    globalScope = $scope;
-
-    $scope.comments = [];
-    $scope.title = "title"
-
-    var ref = new Firebase("https://hacker-news.firebaseio.com/v0/item/" + itemId);
-
-    ref.once("value", onGetItem);
-    
-    function onGetItem(data) {
-        console.log(data.val());
-        globalData = data;
-
-        $scope.title = data.val().title;
-        $scope.description = data.val().by;
-        $scope.comments = data.val().kids;
-
-        console.log($scope.title);
-    }
-}]);
-var globalScope;
+    $scope.comments = item.kids;
+    $scope.title = item.title;
+    $scope.description = item.text;
+    $scope.score = item.score;
+    $scope.by = item.by;
+});

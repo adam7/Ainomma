@@ -18,7 +18,6 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="app.css" />
     <Content Include="Content\ionic.css" />
     <Content Include="Content\ionic.min.css" />
     <Content Include="fonts\ionicons.svg" />
