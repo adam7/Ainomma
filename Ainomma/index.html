@@ -86,6 +86,8 @@
                 <!-- A list of comments: -->
                 <ion-list>
                     <div class="list card" ng-repeat="comment in comments">
+                        <p>{{ comment.score }} points by {{ comment.by }}</p>                                
+                        <div ng-bind-html="comment.text"></div>
                     </div>
                 </ion-list>
             </ion-content>

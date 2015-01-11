@@ -1,7 +1,6 @@
 ﻿var app = angular.module('news', ['firebase', 'ionic']);
 
 // Routing
-
 app.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/')
 
@@ -19,41 +18,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider.state('item', {
         url: '/item/:itemId',
         templateUrl: 'item.html',
-        controller: 'ItemController',
-        resolve: {
-            // TODO: Need to resolve the item with a service from here so that title etc. get updated!
-            item: function ($stateParams, ItemsService) {
-                return ItemsService.getItem($stateParams.itemId);
-            }
-        }
+        controller: 'ItemController'
     })
 })
 
-// Services
-app.factory('ItemsService', function($q){
-    getItem = function (id) {
-        var dfd = $q.defer();
-
-        var item;
-        var ref = new Firebase("https://hacker-news.firebaseio.com/v0/item/" + id);
-
-        ref.once("value", onGetItem);
-
-        function onGetItem(data) {
-            dfd.resolve(data.val());
-        }    
-        return dfd.promise;
-    }
-    
-    return {
-        getItem: getItem
-    }
-});
-
-
-
 // Controllers
-app.controller('FrontPageController', ['$firebase', '$scope', '$ionicLoading', function ($firebase, $scope, $ionicLoading) {
+app.controller('FrontPageController', ['$firebase', '$scope', '$ionicLoading', '$timeout', function ($firebase, $scope, $ionicLoading, $timeout) {
 
     //$ionicLoading.show({
     //    template: 'Loading...'
@@ -65,26 +35,51 @@ app.controller('FrontPageController', ['$firebase', '$scope', '$ionicLoading', f
     // Get a reference to the HN api
     var ref = new Firebase("https://hacker-news.firebaseio.com/v0/topstories");
 
-    ref.on("child_added", onChildAdded);
+    ref.on("child_added", function (child) {
+        $timeout(onChildAdded(child));
+    });
 
     function onChildAdded(snapshot) {
         var ref = new Firebase("https://hacker-news.firebaseio.com/v0/item/" + snapshot.val());
 
-        ref.once("value", onGetItem);
+        ref.once("value", function (item) {
+            $timeout(onGetItem(item));
+        });
     }
 
     function onGetItem(data) {
         $scope.items.push(data.val());
-        //console.log(data.val());
     }
 }]);
 
-app.controller('ItemController', function ($scope, item) {
-    console.log(item);
+app.controller('ItemController', ['$firebase', '$scope', '$stateParams', '$timeout', function ($firebase, $scope, $stateParams, $timeout) {
 
-    $scope.comments = item.kids;
-    $scope.title = item.title;
-    $scope.description = item.text;
-    $scope.score = item.score;
-    $scope.by = item.by;
-});
+    var result;
+    var ref = new Firebase("https://hacker-news.firebaseio.com/v0/item/" + $stateParams.itemId);
+
+    ref.once("value", function(item){
+        $timeout(onGetItem(item));
+    });
+
+    function onGetItem(data) {
+        var val = data.val();
+
+        $scope.title = val.title,
+        $scope.by = val.by,
+        $scope.score = val.score,
+        $scope.description = val.description,
+        $scope.comments = []
+        
+        val.kids.forEach(function (commentId) {
+            var commentRef = new Firebase("https://hacker-news.firebaseio.com/v0/item/" + commentId);
+            commentRef.once("value", function(item){
+                $timeout(onGetComment(item));
+            });
+        });
+    }
+
+    function onGetComment(comment) {
+        console.log(comment.val().text);
+        $scope.comments.push(comment.val());
+    }
+}]);
