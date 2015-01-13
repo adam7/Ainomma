@@ -56,7 +56,7 @@ app.controller('FrontPageController', ['$firebase', '$scope', '$ionicLoading', '
     function onGetItem(data) {
         $scope.items.push(data.val());
     }
-}]);
+}]); 
 
 app.controller('ItemController', ['$firebase', '$scope', '$stateParams', '$timeout', 'appSettings', function ($firebase, $scope, $stateParams, $timeout, appSettings) {
 
