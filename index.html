@@ -88,13 +88,18 @@
                 </div>
                 <!-- A list of comments: -->
                 <ion-list>
-                    <div class="list card" ng-repeat="comment in comments">
-                        <p>{{ comment.score }} points by {{ comment.by }}</p>
-                        <div ng-bind-html="comment.text"></div>
-                    </div>
+                    <div class="item" ng-repeat="comment in comments" ng-include="'commentTree'"></div>
                 </ion-list>
             </ion-content>
         </ion-view>
+    </script>
+
+    <script type="text/ng-template" id="commentTree">
+        <p>{{ comment.by }}</p>
+        <p ng-bind-html="comment.text"></p>
+        <ion-list>
+            <div class="padding-left" ng-repeat="comment in comment.comments" ng-include="'commentTree'"></div>
+        </ion-list>
     </script>
 
     <script type="text/ng-template" id="about.html">

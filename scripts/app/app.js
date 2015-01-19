@@ -56,14 +56,14 @@ app.controller('FrontPageController', ['$firebase', '$scope', '$ionicLoading', '
     function onGetItem(data) {
         $scope.items.push(data.val());
     }
-}]); 
+}]);
 
 app.controller('ItemController', ['$firebase', '$scope', '$stateParams', '$timeout', 'appSettings', function ($firebase, $scope, $stateParams, $timeout, appSettings) {
 
     var result;
     var ref = new Firebase(appSettings.apiUrl + "/item/" + $stateParams.itemId);
 
-    ref.once("value", function(item){
+    ref.once("value", function (item) {
         $timeout(onGetItem(item));
     });
 
@@ -75,16 +75,27 @@ app.controller('ItemController', ['$firebase', '$scope', '$stateParams', '$timeo
         $scope.score = val.score,
         $scope.description = val.description,
         $scope.comments = []
-        
-        val.kids.forEach(function (commentId) {
+
+        getKids(val.kids, $scope.comments);
+    }
+
+    function getKids(kids, comments) {
+        kids.forEach(function (commentId) {
             var commentRef = new Firebase(appSettings.apiUrl + "/item/" + commentId);
-            commentRef.once("value", function(item){
-                $timeout(onGetComment(item));
+            commentRef.once("value", function (item) {
+                $timeout(onGetComment(item, comments));
             });
         });
     }
 
-    function onGetComment(comment) {
-        $scope.comments.push(comment.val());
+    function onGetComment(comment, comments) {
+        var commentData = comment.val();
+        if (!commentData.deleted) {
+            comments.push(commentData);
+            if (commentData.kids) {
+                commentData.comments = [];
+                getKids(commentData.kids, commentData.comments);
+            }
+        }
     }
 }]);
