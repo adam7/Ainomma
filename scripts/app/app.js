@@ -14,7 +14,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         templateUrl: 'home.html',
         controller: 'FrontPageController'
     })
-
+    
     $stateProvider.state('about', {
         url: '/about',
         templateUrl: 'about.html'
@@ -29,10 +29,6 @@ app.config(function ($stateProvider, $urlRouterProvider) {
 
 // Controllers
 app.controller('FrontPageController', ['$firebase', '$scope', '$ionicLoading', '$timeout', 'appSettings', function ($firebase, $scope, $ionicLoading, $timeout, appSettings) {
-
-    //$ionicLoading.show({
-    //    template: 'Loading...'
-    //});
     console.log(appSettings.apiUrl);
 
     // Start with an empty array of items, this is what angular will bind to 

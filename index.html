@@ -88,18 +88,22 @@
                 </div>
                 <!-- A list of comments: -->
                 <ion-list>
-                    <div class="item" ng-repeat="comment in comments" ng-include="'commentTree'"></div>
+                    <div class="item item-text-wrap" ng-repeat="comment in comments" ng-include="'commentTree'"></div>
                 </ion-list>
             </ion-content>
         </ion-view>
     </script>
 
     <script type="text/ng-template" id="commentTree">
-        <p>{{ comment.by }}</p>
-        <p ng-bind-html="comment.text"></p>
-        <ion-list>
-            <div class="padding-left" ng-repeat="comment in comment.comments" ng-include="'commentTree'"></div>
-        </ion-list>
+        <div>
+            <a class="subdued" href="#/item/{{ comment.by }}">
+                <i class="icon ion-person "></i> {{ comment.by }}
+            </a>
+            <p ng-bind-html="comment.text"></p>
+            <ion-list>
+                <div class="padding-left" ng-repeat="comment in comment.comments" ng-include="'commentTree'"></div>
+            </ion-list>
+        </div>
     </script>
 
     <script type="text/ng-template" id="about.html">
@@ -108,7 +112,8 @@
                 <div class="card">
                     <div class="item item-text-wrap">
                         <p>Ainnoma is a client for the <a href="https://news.ycomninator.com">Hacker News</a> website.</p>
-                        <p>It was written by Adam Cooper.</p>
+                        <p>It was written by <a href="http://sequence7.net">Adam Cooper</a>.</p>
+                        <p>It's not finished.</p>
                     </div>
                 </div>
             </ion-content>
