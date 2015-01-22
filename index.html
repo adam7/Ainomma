@@ -32,9 +32,6 @@
                     <a class="item item-icon-left" href="#/top">
                         <i class="icon ion-podium"></i>Top
                     </a>
-                    <a class="item item-icon-left" href="#/new">
-                        <i class="icon ion-android-inbox"></i>New
-                    </a>
                     <a class="item item-icon-left" href="#/ask">
                         <i class="icon ion-help-circled"></i>Ask
                     </a>
@@ -42,7 +39,7 @@
                         <i class="icon ion-stats-bars"></i>Polls
                     </a>
                     <a class="item item-icon-left" href="#/jobs">
-                        <i class="icon ion-ios7-calculator"></i>Jobs
+                        <i class="icon ion-cash"></i>Jobs
                     </a>
                     <a class="item item-icon-left" href="#/users">
                         <i class="icon ion-person-stalker"></i>Users
@@ -62,13 +59,14 @@
                 <ion-list>
                     <div class="list card" ng-repeat="item in items">
                         <a class="item item-icon-left" href="{{ item.url }}">
+                            <i class="icon" ng-class="item.iconClass"></i>
                             <h2>{{ item.title }}</h2>
                             <p>{{ item.url }}</p>
                         </a>
                         <div class="item">
                             <p>{{ item.score }} points by {{ item.by }}</p>
                             <a class="subdued" href="#/item/{{ item.id }}">
-                                <i class="icon ion-chatboxes "></i> {{ item.kids.length }} comments
+                                <i class="icon ion-chatboxes "></i> {{ item.commentCount }} comments
                             </a>
                         </div>
                     </div>
@@ -78,15 +76,18 @@
     </script>
 
     <script type="text/ng-template" id="item.html">
-        <ion-view title="{{ title }}">
+        <ion-view title="">
             <ion-content>
                 <div class="card">
                     <div class="item item-text-wrap">
+                        <h2>{{ title }}</h2>
+                        <a href="{{ url }}">
+                            <p>{{ url }}</p>
+                        </a>
                         <p>{{ description }}</p>
                         <p>{{ score }} points by {{ by }}</p>
                     </div>
                 </div>
-                <!-- A list of comments: -->
                 <ion-list>
                     <div class="item item-text-wrap" ng-repeat="comment in comments" ng-include="'commentTree'"></div>
                 </ion-list>
@@ -96,7 +97,7 @@
 
     <script type="text/ng-template" id="commentTree">
         <div>
-            <a class="subdued" href="#/item/{{ comment.by }}">
+            <a class="subdued" href="#/user/{{ comment.by }}">
                 <i class="icon ion-person "></i> {{ comment.by }}
             </a>
             <p ng-bind-html="comment.text"></p>
@@ -111,7 +112,7 @@
             <ion-content>
                 <div class="card">
                     <div class="item item-text-wrap">
-                        <p>Ainnoma is a client for the <a href="https://news.ycomninator.com">Hacker News</a> website.</p>
+                        <p>Ainnoma is a client for the <a href="https://news.ycombinator.com">Hacker News</a> website.</p>
                         <p>It was written by <a href="http://sequence7.net">Adam Cooper</a>.</p>
                         <p>It's not finished.</p>
                     </div>

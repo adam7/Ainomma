@@ -50,7 +50,28 @@ app.controller('FrontPageController', ['$firebase', '$scope', '$ionicLoading', '
     }
 
     function onGetItem(data) {
-        $scope.items.push(data.val());
+        var val = data.val();
+        
+        $scope.items.push({
+            url: val.url,
+            title: val.title,
+            score: val.score,
+            by: val.by,
+            id: val.id,
+            commentCount: val.kids.length,
+            iconClass: getIconClass(val.type)
+        });        
+    }
+
+    function getIconClass(type) {
+        switch (type) {
+            case "job":
+                return "ion-cash";
+            case "poll":
+                return "ion-stats-bars";
+            default:
+                return "ion-ios7-paper";
+        };
     }
 }]);
 
@@ -70,6 +91,7 @@ app.controller('ItemController', ['$firebase', '$scope', '$stateParams', '$timeo
         $scope.by = val.by,
         $scope.score = val.score,
         $scope.description = val.description,
+        $scope.url = val.url,
         $scope.comments = []
 
         getKids(val.kids, $scope.comments);
