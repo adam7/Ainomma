@@ -25,6 +25,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         templateUrl: 'item.html',
         controller: 'ItemController'
     })
+
+    $stateProvider.state('user', {
+        url: '/user/:userId',
+        templateUrl: 'user.html',
+        controller: 'UserController'
+    })
 })
 
 // Controllers
@@ -72,6 +78,22 @@ app.controller('FrontPageController', ['$firebase', '$scope', '$ionicLoading', '
             default:
                 return "ion-ios7-paper";
         };
+    }
+}]);
+
+app.controller('UserController', ['$firebase', '$scope', '$stateParams', '$timeout', 'appSettings', function ($firebase, $scope, $stateParams, $timeout, appSettings) {
+    var ref = new Firebase(appSettings.apiUrl + "/user/" + $stateParams.userId);
+
+    ref.once("value", function (user) {
+        $timeout(onGetUser(user));
+    });
+
+    function onGetUser(data) {
+        var val = data.val();
+
+        $scope.id = val.id;
+        $scope.karma = val.karma;
+        $scope.about = val.about;
     }
 }]);
 

@@ -58,7 +58,7 @@
                 <!-- A list of news items: -->
                 <ion-list>
                     <div class="list card" ng-repeat="item in items">
-                        <a class="item item-icon-left" href="{{ item.url }}">
+                        <a class="item item-icon-left item-text-wrap" href="{{ item.url }}">
                             <i class="icon" ng-class="item.iconClass"></i>
                             <h2>{{ item.title }}</h2>
                             <p>{{ item.url }}</p>
@@ -75,6 +75,20 @@
         </ion-view>
     </script>
 
+    <script type="text/ng-template" id="user.html">
+        <ion-view>
+            <ion-content>
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <h2>{{ id }}</h2>
+                        <p>{{ karma }} karma</p>
+                        <p ng-bind-html="about"></p>
+                    </div>
+                </div>
+            </ion-content>
+        </ion-view>
+    </script>
+
     <script type="text/ng-template" id="item.html">
         <ion-view title="">
             <ion-content>
@@ -85,7 +99,9 @@
                             <p>{{ url }}</p>
                         </a>
                         <p>{{ description }}</p>
-                        <p>{{ score }} points by {{ by }}</p>
+                        <p>{{ score }} points by <a class="subdued" href="#/user/{{ by }}">
+                            <i class="icon ion-person "></i>{{ by }}</a>
+                        </p>
                     </div>
                 </div>
                 <ion-list>
