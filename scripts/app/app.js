@@ -65,17 +65,23 @@ app.controller('FrontPageController', ['$firebase', '$scope', '$ionicLoading', '
             by: val.by,
             id: val.id,
             commentCount: val.kids.length,
-            iconClass: getIconClass(val.type)
+            iconClass: getIconClass(val)
         });        
     }
 
-    function getIconClass(type) {
-        switch (type) {
+    function getIconClass(val) {
+        switch (val.type) {
             case "job":
                 return "ion-cash";
             case "poll":
                 return "ion-stats-bars";
             default:
+                // Ask posts start with "Ask HN:"
+                if (val.title.substring(0, 7) === "Ask HN:")
+                    return "ion-help-circled";
+                // Show posts start with "Show HN:"
+                if (val.title.substring(0, 8) === "Show HN:")
+                    return "ion-eye";
                 return "ion-ios7-paper";
         };
     }
