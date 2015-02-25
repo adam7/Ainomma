@@ -1,140 +1,145 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Ainomma</title>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <link href="Content/ionic.css" rel="stylesheet">
-    <script src="scripts/ionic.bundle.js"></script>
-    <script src="scripts/firebase.js"></script>
-    <script src="scripts/angularfire.js"></script>
-    <script src="scripts/app/app.js"></script>
+	<meta charset="utf-8">
+	<title>Ainomma</title>
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+	<link href="Content/ionic.css" rel="stylesheet">
+	<script src="scripts/ionic.bundle.js"></script>
+	<script src="scripts/firebase.js"></script>
+	<script src="scripts/angularfire.js"></script>
+	<script src="scripts/app/app.js"></script>
 </head>
 <body ng-app="news">
-    <ion-side-menus>
-        <!-- Main content -->
-        <ion-side-menu-content>
-            <ion-nav-bar class="bar-dark">
-                <ion-nav-buttons side="left">
-                    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
-                </ion-nav-buttons>
-            </ion-nav-bar>
-            <ion-nav-view></ion-nav-view>
-        </ion-side-menu-content>
+	<ion-side-menus>
+		<!-- Main content -->
+		<ion-side-menu-content>
+			<ion-nav-bar class="bar-dark">
+				<ion-nav-buttons side="primary">
+					<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+				</ion-nav-buttons>
+				<ion-nav-back-button></ion-nav-back-button>
+			</ion-nav-bar>
+			<ion-nav-view>
 
-        <!-- Left menu -->
-        <ion-side-menu side="left">
-            <ion-header-bar class="bar-dark">
-                <h1 class="title">Menu</h1>
-            </ion-header-bar>
-            <ion-content>
-                <ion-list>
-                    <a class="item item-icon-left" href="#/top">
-                        <i class="icon ion-podium"></i>Top
-                    </a>
-                    <a class="item item-icon-left" href="#/ask">
-                        <i class="icon ion-help-circled"></i>Ask
-                    </a>
-                    <a class="item item-icon-left" href="#/polls">
-                        <i class="icon ion-stats-bars"></i>Polls
-                    </a>
-                    <a class="item item-icon-left" href="#/jobs">
-                        <i class="icon ion-cash"></i>Jobs
-                    </a>
-                    <a class="item item-icon-left" href="#/users">
-                        <i class="icon ion-person-stalker"></i>Users
-                    </a>
-                    <a class="item item-icon-left" href="#/about">
-                        <i class="icon ion-ios7-information"></i>About
-                    </a>
-                </ion-list>
-            </ion-content>
-        </ion-side-menu>
-    </ion-side-menus>
+			</ion-nav-view>
+		</ion-side-menu-content>
 
-    <script type="text/ng-template" id="home.html">
-        <ion-view title="Front Page">
-            <ion-content>
-                <!-- A list of news items: -->
-                <ion-list>
-                    <div class="list card" ng-repeat="item in items">
-                        <a class="item item-icon-left item-text-wrap" href="{{ item.url }}">
-                            <i class="icon" ng-class="item.iconClass"></i>
-                            <h2>{{ item.title }}</h2>
-                            <p>{{ item.url }}</p>
-                        </a>
-                        <div class="item">
-                            <p>{{ item.score }} points by {{ item.by }}</p>
-                            <a class="subdued" href="#/item/{{ item.id }}">
-                                <i class="icon ion-chatboxes "></i> {{ item.commentCount }} comments
-                            </a>
-                        </div>
-                    </div>
-                </ion-list>
-            </ion-content>
-        </ion-view>
-    </script>
+		<!-- Left menu -->
+		<ion-side-menu side="left">
+			<ion-header-bar class="bar-dark">
+				<h1 class="title">Menu</h1>
+			</ion-header-bar>
+			<ion-content>
+				<ion-list>
+					<a class="item item-icon-left" href="#/top">
+						<i class="icon ion-podium"></i>Top
+					</a>
+					<a class="item item-icon-left" href="#/ask">
+						<i class="icon ion-help-circled"></i>Ask
+					</a>
+					<a class="item item-icon-left" href="#/polls">
+						<i class="icon ion-stats-bars"></i>Polls
+					</a>
+					<a class="item item-icon-left" href="#/jobs">
+						<i class="icon ion-cash"></i>Jobs
+					</a>
+					<a class="item item-icon-left" href="#/users">
+						<i class="icon ion-person-stalker"></i>Users
+					</a>
+					<a class="item item-icon-left" href="#/about">
+						<i class="icon ion-ios7-information"></i>About
+					</a>
+				</ion-list>
+			</ion-content>
+		</ion-side-menu>
+	</ion-side-menus>
 
-    <script type="text/ng-template" id="user.html">
-        <ion-view>
-            <ion-content>
-                <div class="card">
-                    <div class="item item-text-wrap">
-                        <h2>{{ id }}</h2>
-                        <p>{{ karma }} karma</p>
-                        <p ng-bind-html="about"></p>
-                    </div>
-                </div>
-            </ion-content>
-        </ion-view>
-    </script>
+	<script type="text/ng-template" id="home.html">
+		<ion-view title="Front Page">
+			<ion-content>
+				<!-- A list of news items: -->
+				<ion-list>
+					<div class="list card" ng-repeat="item in items">
+						<a class="item item-icon-left item-text-wrap" href="{{ item.url }}">
+							<i class="icon" ng-class="item.iconClass"></i>
+							<h2>{{ item.title }}</h2>
+						</a>
+						<div class="item">
+							<a class="subdued" href="{{ item.url }}">{{ item.url }}</a>
+							<div class="padding-top">
+								<a class="subdued padding-vertical" href="#/item/{{ item.id }}">
+									<i class="icon ion-chatboxes "></i> {{ item.commentCount }} comments
+								</a>
+								<a class="subdued ">{{ item.score }} points by {{ item.by }}</a>
+							</div>
+						</div>
+					</div>
+				</ion-list>
+			</ion-content>
+		</ion-view>
+	</script>
 
-    <script type="text/ng-template" id="item.html">
-        <ion-view title="">
-            <ion-content>
-                <div class="card">
-                    <div class="item item-text-wrap">
-                        <h2>{{ title }}</h2>
-                        <a href="{{ url }}">
-                            <p>{{ url }}</p>
-                        </a>
-                        <p>{{ description }}</p>
-                        <p>{{ score }} points by <a class="subdued" href="#/user/{{ by }}">
-                            <i class="icon ion-person "></i>{{ by }}</a>
-                        </p>
-                    </div>
-                </div>
-                <ion-list>
-                    <div class="item item-text-wrap" ng-repeat="comment in comments" ng-include="'commentTree'"></div>
-                </ion-list>
-            </ion-content>
-        </ion-view>
-    </script>
+	<script type="text/ng-template" id="user.html">
+		<ion-view>
+			<ion-content>
+				<div class="card">
+					<div class="item item-text-wrap">
+						<h2>{{ id }}</h2>
+						<p>{{ karma }} karma</p>
+						<p ng-bind-html="about"></p>
+					</div>
+				</div>
+			</ion-content>
+		</ion-view>
+	</script>
 
-    <script type="text/ng-template" id="commentTree">
-        <div>
-            <a class="subdued" href="#/user/{{ comment.by }}">
-                <i class="icon ion-person "></i> {{ comment.by }}
-            </a>
-            <p ng-bind-html="comment.text"></p>
-            <ion-list>
-                <div class="padding-left" ng-repeat="comment in comment.comments" ng-include="'commentTree'"></div>
-            </ion-list>
-        </div>
-    </script>
+	<script type="text/ng-template" id="item.html">
+		<ion-view title="">
+			<ion-content>
+				<div class="card">
+					<div class="item item-text-wrap">
+						<h2>{{ title }}</h2>
+						<a class="subdued padding-vertical" href="{{ url }}">{{ url }}</a>
+						<p>{{ description }}</p>
+						<p>
+							{{ score }} points by <a class="subdued" href="#/user/{{ by }}">
+								<i class="icon ion-person "></i> {{ by }}
+							</a>
+						</p>
+					</div>
+				</div>
+				<ion-list>
+					<div class="item item-text-wrap" ng-repeat="comment in comments" ng-include="'commentTree'"></div>
+				</ion-list>
+			</ion-content>
+		</ion-view>
+	</script>
 
-    <script type="text/ng-template" id="about.html">
-        <ion-view title="About">
-            <ion-content>
-                <div class="card">
-                    <div class="item item-text-wrap">
-                        <p>Ainnoma is a client for the <a href="https://news.ycombinator.com">Hacker News</a> website.</p>
-                        <p>It was written by <a href="http://sequence7.net">Adam Cooper</a>.</p>
-                        <p>It's not finished.</p>
-                    </div>
-                </div>
-            </ion-content>
-        </ion-view>
-    </script>
+	<script type="text/ng-template" id="commentTree">
+		<div>
+			<a class="subdued" href="#/user/{{ comment.by }}">
+				<i class="icon ion-person "></i> {{ comment.by }}
+			</a>
+			<p ng-bind-html="comment.text"></p>
+			<ion-list>
+				<div class="padding-left" ng-repeat="comment in comment.comments" ng-include="'commentTree'"></div>
+			</ion-list>
+		</div>
+	</script>
+
+	<script type="text/ng-template" id="about.html">
+		<ion-view title="About">
+			<ion-content>
+				<div class="card">
+					<div class="item item-text-wrap">
+						<p>Ainnoma is a client for the <a href="https://news.ycombinator.com">Hacker News</a> website.</p>
+						<p>It was written by <a href="http://sequence7.net">Adam Cooper</a>.</p>
+						<p>It's not finished.</p>
+					</div>
+				</div>
+			</ion-content>
+		</ion-view>
+	</script>
 </body>
 </html>
