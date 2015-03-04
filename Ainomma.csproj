@@ -50,6 +50,8 @@
     <Content Include="scripts\angularfire.js" />
     <Content Include="scripts\angularfire.min.js" />
     <Content Include="scripts\app\app.js" />
+    <Content Include="scripts\app\constants.js" />
+    <Content Include="scripts\app\controllers.js" />
     <Content Include="scripts\firebase-debug.js" />
     <Content Include="scripts\firebase-simple-login-debug.js" />
     <Content Include="scripts\firebase-simple-login.js" />
