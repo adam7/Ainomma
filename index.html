@@ -9,6 +9,7 @@
 	<script src="scripts/firebase.js"></script>
 	<script src="scripts/angularfire.js"></script>
 	<script src="scripts/app/constants.js"></script>
+	<script src="scripts/app/services.js"></script>
 	<script src="scripts/app/controllers.js"></script>
 	<script src="scripts/app/app.js"></script>
 </head>
@@ -17,10 +18,9 @@
 		<!-- Main content -->
 		<ion-side-menu-content>
 			<ion-nav-bar class="bar-dark">
-				<ion-nav-buttons side="primary">
+				<ion-nav-buttons side="left">
 					<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
 				</ion-nav-buttons>
-				<ion-nav-back-button></ion-nav-back-button>
 			</ion-nav-bar>
 			<ion-nav-view>
 
@@ -37,17 +37,23 @@
 					<a class="item item-icon-left" href="#/top">
 						<i class="icon ion-podium"></i>Top
 					</a>
+					<a class="item item-icon-left" href="#/new">
+						<i class="icon ion-plus-circled"></i>New
+					</a>
 					<a class="item item-icon-left" href="#/ask">
 						<i class="icon ion-help-circled"></i>Ask
 					</a>
-					<a class="item item-icon-left" href="#/polls">
-						<i class="icon ion-stats-bars"></i>Polls
+					<a class="item item-icon-left" href="#/show">
+						<i class="icon ion-eye"></i>Show
 					</a>
 					<a class="item item-icon-left" href="#/jobs">
 						<i class="icon ion-cash"></i>Jobs
 					</a>
 					<a class="item item-icon-left" href="#/users">
 						<i class="icon ion-person-stalker"></i>Users
+					</a>
+					<a class="item item-icon-left" href="#/settings">
+						<i class="icon ion-gear-a"></i>Settings
 					</a>
 					<a class="item item-icon-left" href="#/about">
 						<i class="icon ion-ios7-information"></i>About
@@ -57,7 +63,7 @@
 		</ion-side-menu>
 	</ion-side-menus>
 
-	<script type="text/ng-template" id="home.html">
+	<script type="text/ng-template" id="items.html">
 		<ion-view title="Front Page">
 			<ion-content>
 				<!-- A list of news items: -->
