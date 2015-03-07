@@ -1,0 +1,31 @@
+﻿<ion-view title="">
+	<ion-content>
+		<div class="card">
+			<div class="item item-text-wrap">
+				<h2>{{ title }}</h2>
+				<a class="subdued padding-vertical" href="{{ url }}">{{ url }}</a>
+				<p>{{ description }}</p>
+				<p>
+					{{ score }} points by <a class="subdued" href="#/user/{{ by }}">
+						<i class="icon ion-person "></i> {{ by }}
+					</a>
+				</p>
+			</div>
+		</div>
+		<ion-list>
+			<div class="item item-text-wrap" ng-repeat="comment in comments" ng-include="'commentTree'"></div>
+		</ion-list>
+	</ion-content>
+</ion-view>
+
+<script type="text/ng-template" id="commentTree">
+	<div>
+		<a class="subdued" href="#/user/{{ comment.by }}">
+			<i class="icon ion-person "></i> {{ comment.by }}
+		</a>
+		<p ng-bind-html="comment.text"></p>
+		<ion-list>
+			<div class="padding-left" ng-repeat="comment in comment.comments" ng-include="'commentTree'"></div>
+		</ion-list>
+	</div>
+</script>

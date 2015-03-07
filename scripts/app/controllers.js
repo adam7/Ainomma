@@ -1,26 +1,26 @@
 ﻿angular.module('ainomma.controllers', ['firebase', 'ionic', 'ainomma.constants', 'ainomma.services'])
 
-	.controller('TopController', function (AppSettings, HnFirebase) {
-		HnFirebase.getStories(AppSettings.topUrl);
+	.controller('TopController', function (AppSettings, FirebaseFactory, SettingsFactory) {
+		FirebaseFactory.getStories(AppSettings.topUrl, SettingsFactory.getMaxTop());
 	})
 
-	.controller('NewController', function (AppSettings, HnFirebase) {
-		HnFirebase.getStories(AppSettings.newUrl);
+	.controller('NewController', function (AppSettings, FirebaseFactory, SettingsFactory) {
+		FirebaseFactory.getStories(AppSettings.newUrl, SettingsFactory.getMaxNew());
 	})
 
-	.controller('AskController', function (AppSettings, HnFirebase) {
-		HnFirebase.getStories(AppSettings.askUrl);
+	.controller('AskController', function (AppSettings, FirebaseFactory, SettingsFactory) {
+		FirebaseFactory.getStories(AppSettings.askUrl, SettingsFactory.getMaxAsk());
 	})
 
-	.controller('ShowController', function (AppSettings, HnFirebase) {
-		HnFirebase.getStories(AppSettings.showUrl);
+	.controller('ShowController', function (AppSettings, FirebaseFactory, SettingsFactory) {
+		FirebaseFactory.getStories(AppSettings.showUrl, SettingsFactory.getMaxShow());
 	})
 
-	.controller('JobsController', function (AppSettings, HnFirebase) {
-		HnFirebase.getStories(AppSettings.jobsUrl);
+	.controller('JobsController', function (AppSettings, FirebaseFactory, SettingsFactory) {
+		FirebaseFactory.getStories(AppSettings.jobsUrl, SettingsFactory.getMaxJob());
 	})
 
-	.controller('UserController', ['$firebase', '$scope', '$stateParams', '$timeout', 'ainomma.constants.appSettings', function ($firebase, $scope, $stateParams, $timeout, AppSettings) {
+	.controller('UserController', function ($firebase, $scope, $stateParams, $timeout, AppSettings) {
 		var ref = new Firebase(appSettings.userUrl + $stateParams.userId);
 
 		ref.once("value", function (user) {
@@ -34,12 +34,12 @@
 			$scope.karma = val.karma;
 			$scope.about = val.about;
 		}
-	}])
+	})
 
-	.controller('ItemController', ['$firebase', '$scope', '$stateParams', '$timeout', 'ainomma.constants.appSettings', function ($firebase, $scope, $stateParams, $timeout, AppSettings) {
+	.controller('ItemController', function ($firebase, $scope, $stateParams, $timeout, AppSettings) {
 
 		var result;
-		var ref = new Firebase(appSettings.itemUrl + $stateParams.itemId);
+		var ref = new Firebase(AppSettings.itemUrl + $stateParams.itemId);
 
 		ref.once("value", function (item) {
 			$timeout(function () { onGetItem(item) });
@@ -60,7 +60,7 @@
 
 		function getKids(kids, comments) {
 			kids.forEach(function (commentId) {
-				var commentRef = new Firebase(appSettings.itemUrl + commentId);
+				var commentRef = new Firebase(AppSettings.itemUrl + commentId);
 				commentRef.once("value", function (item) {
 					$timeout(function () { onGetComment(item, comments) });
 				});
@@ -77,4 +77,12 @@
 				}
 			}
 		}
-	}]);
+	})
+
+	.controller('SettingsController', function ($scope, SettingsFactory) {
+		$scope.settings = SettingsFactory.get();
+
+		// $scope.$watch('settings', SettingsFactory.set($scope.settings));
+
+		$scope.$watch('settings', SettingsFactory.set, true);
+	});

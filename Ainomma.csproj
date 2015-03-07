@@ -806,6 +806,11 @@
     <Content Include="scripts\ionic.bundle.min.js" />
     <Content Include="scripts\ionic.js" />
     <Content Include="scripts\ionic.min.js" />
+    <Content Include="templates\about.html" />
+    <Content Include="templates\item.html" />
+    <Content Include="templates\items.html" />
+    <Content Include="templates\settings.html" />
+    <Content Include="templates\user.html" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="scripts\typings\angularfire\angularfire.d.ts" />
@@ -840,6 +845,15 @@
     <Content Include="fonts\ionicons.woff" />
     <Content Include="fonts\ionicons.ttf" />
     <Content Include="fonts\ionicons.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

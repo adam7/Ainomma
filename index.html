@@ -18,12 +18,11 @@
 		<!-- Main content -->
 		<ion-side-menu-content>
 			<ion-nav-bar class="bar-dark">
-				<ion-nav-buttons side="left">
+				<ion-nav-buttons side="primary">
 					<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
 				</ion-nav-buttons>
 			</ion-nav-bar>
 			<ion-nav-view>
-
 			</ion-nav-view>
 		</ion-side-menu-content>
 
@@ -34,28 +33,28 @@
 			</ion-header-bar>
 			<ion-content>
 				<ion-list>
-					<a class="item item-icon-left" href="#/top">
+					<a class="item item-icon-left" href="#/top" menu-close>
 						<i class="icon ion-podium"></i>Top
 					</a>
-					<a class="item item-icon-left" href="#/new">
+					<a class="item item-icon-left" href="#/new" menu-close>
 						<i class="icon ion-plus-circled"></i>New
 					</a>
-					<a class="item item-icon-left" href="#/ask">
+					<a class="item item-icon-left" href="#/ask" menu-close>
 						<i class="icon ion-help-circled"></i>Ask
 					</a>
-					<a class="item item-icon-left" href="#/show">
+					<a class="item item-icon-left" href="#/show" menu-close>
 						<i class="icon ion-eye"></i>Show
 					</a>
-					<a class="item item-icon-left" href="#/jobs">
+					<a class="item item-icon-left" href="#/jobs" menu-close>
 						<i class="icon ion-cash"></i>Jobs
 					</a>
-					<a class="item item-icon-left" href="#/users">
+					<a class="item item-icon-left" href="#/users" menu-close>
 						<i class="icon ion-person-stalker"></i>Users
 					</a>
-					<a class="item item-icon-left" href="#/settings">
+					<a class="item item-icon-left" href="#/settings" menu-close>
 						<i class="icon ion-gear-a"></i>Settings
 					</a>
-					<a class="item item-icon-left" href="#/about">
+					<a class="item item-icon-left" href="#/about" menu-close>
 						<i class="icon ion-ios7-information"></i>About
 					</a>
 				</ion-list>
@@ -63,91 +62,5 @@
 		</ion-side-menu>
 	</ion-side-menus>
 
-	<script type="text/ng-template" id="items.html">
-		<ion-view title="Front Page">
-			<ion-content>
-				<!-- A list of news items: -->
-				<ion-list>
-					<div class="list card" ng-repeat="item in items">
-						<a class="item item-icon-left item-text-wrap" href="{{ item.url }}">
-							<i class="icon" ng-class="item.iconClass"></i>
-							<h2>{{ item.title }}</h2>
-						</a>
-						<div class="item">
-							<a class="subdued" href="{{ item.url }}">{{ item.url }}</a>
-							<div class="padding-top">
-								<a class="subdued padding-vertical" href="#/item/{{ item.id }}">
-									<i class="icon ion-chatboxes "></i> {{ item.commentCount }} comments
-								</a>
-								<a class="subdued ">{{ item.score }} points by {{ item.by }}</a>
-							</div>
-						</div>
-					</div>
-				</ion-list>
-			</ion-content>
-		</ion-view>
-	</script>
-
-	<script type="text/ng-template" id="user.html">
-		<ion-view>
-			<ion-content>
-				<div class="card">
-					<div class="item item-text-wrap">
-						<h2>{{ id }}</h2>
-						<p>{{ karma }} karma</p>
-						<p ng-bind-html="about"></p>
-					</div>
-				</div>
-			</ion-content>
-		</ion-view>
-	</script>
-
-	<script type="text/ng-template" id="item.html">
-		<ion-view title="">
-			<ion-content>
-				<div class="card">
-					<div class="item item-text-wrap">
-						<h2>{{ title }}</h2>
-						<a class="subdued padding-vertical" href="{{ url }}">{{ url }}</a>
-						<p>{{ description }}</p>
-						<p>
-							{{ score }} points by <a class="subdued" href="#/user/{{ by }}">
-								<i class="icon ion-person "></i> {{ by }}
-							</a>
-						</p>
-					</div>
-				</div>
-				<ion-list>
-					<div class="item item-text-wrap" ng-repeat="comment in comments" ng-include="'commentTree'"></div>
-				</ion-list>
-			</ion-content>
-		</ion-view>
-	</script>
-
-	<script type="text/ng-template" id="commentTree">
-		<div>
-			<a class="subdued" href="#/user/{{ comment.by }}">
-				<i class="icon ion-person "></i> {{ comment.by }}
-			</a>
-			<p ng-bind-html="comment.text"></p>
-			<ion-list>
-				<div class="padding-left" ng-repeat="comment in comment.comments" ng-include="'commentTree'"></div>
-			</ion-list>
-		</div>
-	</script>
-
-	<script type="text/ng-template" id="about.html">
-		<ion-view title="About">
-			<ion-content>
-				<div class="card">
-					<div class="item item-text-wrap">
-						<p>Ainnoma is a client for the <a href="https://news.ycombinator.com">Hacker News</a> website.</p>
-						<p>It was written by <a href="http://sequence7.net">Adam Cooper</a>.</p>
-						<p>It's not finished.</p>
-					</div>
-				</div>
-			</ion-content>
-		</ion-view>
-	</script>
 </body>
 </html>

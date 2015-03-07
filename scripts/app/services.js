@@ -1,5 +1,5 @@
 ﻿angular.module('ainomma.services', ['firebase', 'ionic', 'ainomma.constants'])
-	.factory('HnFirebase', function ($firebase, $rootScope, $ionicLoading, $timeout, AppSettings) {
+	.factory('FirebaseFactory', function ($firebase, $rootScope, $ionicLoading, $timeout, AppSettings) {
 		function onChildAdded(snapshot) {
 			var ref = new Firebase(AppSettings.itemUrl + snapshot.val());
 
@@ -40,12 +40,14 @@
 		}
 
 		return {
-			getStories: function (url) {
+			getStories: function (url, maxResults) {
 				// Start with an empty array of items, this is what angular will bind to 
 				$rootScope.items = [];
 
+				console.log(maxResults);
+
 				// Get a reference to the HN api
-				var ref = new Firebase(url);
+				var ref = new Firebase(url).limitToFirst(Number(maxResults));
 
 				ref.on("child_added", function (child) {
 					$timeout(function () { onChildAdded(child); });
@@ -53,3 +55,42 @@
 			}
 		}
 	})
+
+	.factory('SettingsFactory', function ($window) {
+		var settingsKey = "AinommaSettings";
+		var defaultSettings = [
+			{ 'name': 'Max Top Stories', 'value': 100 },
+			{ 'name': 'Max New Stories', 'value': 100 },
+			{ 'name': 'Max Ask Stories', 'value': 100 },
+			{ 'name': 'Max Show Stories', 'value': 100 },
+			{ 'name': 'Max Job Stories', 'value': 100 }
+		];
+
+		return {
+			get: function () {
+				var settingsString = $window.localStorage[settingsKey];
+
+				return settingsString ? JSON.parse(settingsString) : defaultSettings;
+			},
+			set: function (settings) {
+				$window.localStorage[settingsKey] = JSON.stringify(settings);
+			},
+
+			/// TODO: Yeah I know this is nasty
+			getMaxTop: function () {
+				return this.get()[0].value;
+			},
+			getMaxNew: function () {
+				return this.get()[1].value;
+			},
+			getMaxAsk: function () {
+				return this.get()[2].value;
+			},
+			getMaxShow: function () {
+				return this.get()[3].value;
+			},
+			getMaxJob: function () {
+				return this.get()[4].value;
+			}
+		}
+	});
