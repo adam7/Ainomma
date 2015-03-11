@@ -3,7 +3,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <ProjectGuid>{DF69669B-1938-4BDE-8765-D0B91CCD73C2}</ProjectGuid>
+    <ProjectGuid>{69020FAF-22E0-4E97-8BEA-0035FD51F002}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <OutputPath>bin</OutputPath>
@@ -18,10 +18,9 @@
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Content\ionic.css" />
-    <Content Include="Content\ionic.min.css" />
-    <Content Include="fonts\ionicons.svg" />
-    <Content Include="index.html" />
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="scripts\angular-animate.js" />
     <Content Include="scripts\angular-animate.min.js" />
     <Content Include="scripts\angular-aria.js" />
@@ -49,13 +48,11 @@
     <Content Include="scripts\angular.min.js" />
     <Content Include="scripts\angularfire.js" />
     <Content Include="scripts\angularfire.min.js" />
-    <Content Include="scripts\app\app.js" />
-    <Content Include="scripts\app\constants.js" />
-    <Content Include="scripts\app\controllers.js" />
-    <Content Include="scripts\app\services.js" />
+    <Content Include="Content\ionic.css" />
+    <Content Include="Content\ionic.min.css" />
+    <Content Include="fonts\ionicons.svg" />
+    <Content Include="index.html" />
     <Content Include="scripts\firebase-debug.js" />
-    <Content Include="scripts\firebase-simple-login-debug.js" />
-    <Content Include="scripts\firebase-simple-login.js" />
     <Content Include="scripts\firebase.js" />
     <Content Include="scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="scripts\i18n\angular-locale_aa-er.js" />
@@ -811,9 +808,14 @@
     <Content Include="templates\items.html" />
     <Content Include="templates\settings.html" />
     <Content Include="templates\user.html" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="scripts\typings\angularfire\angularfire.d.ts" />
+    <TypeScriptCompile Include="scripts\app\app.ts" />
+    <TypeScriptCompile Include="scripts\app\constants.ts" />
+    <TypeScriptCompile Include="scripts\app\controllers.ts" />
+    <TypeScriptCompile Include="scripts\app\services.ts" />
+    <TypeScriptCompile Include="scripts\typings\angular-ui\angular-ui-router.d.ts" />
     <TypeScriptCompile Include="scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="scripts\typings\angularjs\angular-mocks.d.ts" />
@@ -829,7 +831,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="readme.md" />
+    <Content Include="fonts\ionicons.woff" />
+    <Content Include="fonts\ionicons.ttf" />
+    <Content Include="fonts\ionicons.eot" />
     <Content Include="scripts\version.json" />
     <Content Include="scripts\errors.json" />
     <Content Include="scripts\angular-touch.min.js.map" />
@@ -842,18 +846,6 @@
     <Content Include="scripts\angular-aria.min.js.map" />
     <Content Include="scripts\angular-animate.min.js.map" />
     <Content Include="scripts\angular.min.js.map" />
-    <Content Include="fonts\ionicons.woff" />
-    <Content Include="fonts\ionicons.ttf" />
-    <Content Include="fonts\ionicons.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="web.config" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
@@ -869,9 +861,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>25377</DevelopmentServerPort>
+          <DevelopmentServerPort>31621</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:25377/</IISUrl>
+          <IISUrl>http://localhost:43797/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
