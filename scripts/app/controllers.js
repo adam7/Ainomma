@@ -89,17 +89,19 @@ var ainomma;
             }
             ItemController.prototype.onGetItem = function (data) {
                 var val = data.val();
-                this.$scope.title = val.title, this.$scope.by = val.by, this.$scope.score = val.score, this.$scope.description = val.description, this.$scope.url = val.url, this.$scope.comments = [];
+                this.$scope.title = val.title, this.$scope.text = val.text, this.$scope.by = val.by, this.$scope.score = val.score, this.$scope.description = val.description, this.$scope.url = val.url, this.$scope.comments = [];
                 this.getKids(val.kids, this.$scope.comments);
             };
             ItemController.prototype.getKids = function (kids, comments) {
                 var _this = this;
-                kids.forEach(function (commentId) {
-                    var commentRef = new Firebase(_this.AppSettings.itemUrl + commentId);
-                    commentRef.once("value", function (item) {
-                        _this.$timeout(function () { return _this.onGetComment(item, comments); });
+                if (kids) {
+                    kids.forEach(function (commentId) {
+                        var commentRef = new Firebase(_this.AppSettings.itemUrl + commentId);
+                        commentRef.once("value", function (item) {
+                            _this.$timeout(function () { return _this.onGetComment(item, comments); });
+                        });
                     });
-                });
+                }
             };
             ItemController.prototype.onGetComment = function (comment, comments) {
                 var commentData = comment.val();
@@ -119,8 +121,8 @@ var ainomma;
                 var _this = this;
                 this.$scope = $scope;
                 this.SettingsService = SettingsService;
-                this.$scope.settings = this.SettingsService.get();
-                this.$scope.$watch('settings', function () { return _this.SettingsService.set; }, true);
+                this.$scope['settings'] = this.SettingsService.get();
+                this.$scope.$watch('settings', function (settings) { return _this.SettingsService.set(settings); }, true);
             }
             return SettingsController;
         })();

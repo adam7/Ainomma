@@ -64,6 +64,7 @@
 			var val = data.val();
 
 			this.$scope.title = val.title,
+			this.$scope.text = val.text,
 			this.$scope.by = val.by,
 			this.$scope.score = val.score,
 			this.$scope.description = val.description,
@@ -74,12 +75,14 @@
 		}
 
 		getKids(kids, comments) {
-			kids.forEach(commentId => {
-				var commentRef = new Firebase(this.AppSettings.itemUrl + commentId);
-				commentRef.once("value",(item) => {
-					this.$timeout(() => this.onGetComment(item, comments));
+			if (kids) {
+				kids.forEach(commentId => {
+					var commentRef = new Firebase(this.AppSettings.itemUrl + commentId);
+					commentRef.once("value",(item) => {
+						this.$timeout(() => this.onGetComment(item, comments));
+					});
 				});
-			})
+			}
 		}
 
 		onGetComment(comment, comments) {
@@ -95,9 +98,9 @@
 	}
 
 	export class SettingsController {
-		constructor(private $scope, private SettingsService) {			
-			this.$scope.settings = this.SettingsService.get();
-			this.$scope.$watch('settings', () => this.SettingsService.set, true);
+		constructor(private $scope: ng.IScope, private SettingsService) {			
+			this.$scope['settings'] = this.SettingsService.get();
+			this.$scope.$watch('settings', (settings) => this.SettingsService.set(settings), true);
 		}
 	}
 }

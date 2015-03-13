@@ -21,6 +21,7 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\jasmine.css" />
     <Content Include="scripts\angular-animate.js" />
     <Content Include="scripts\angular-animate.min.js" />
     <Content Include="scripts\angular-aria.js" />
@@ -52,6 +53,9 @@
     <Content Include="Content\ionic.min.css" />
     <Content Include="fonts\ionicons.svg" />
     <Content Include="index.html" />
+    <Content Include="scripts\app\tests\index.html" />
+    <Content Include="scripts\boot.js" />
+    <Content Include="scripts\console.js" />
     <Content Include="scripts\firebase-debug.js" />
     <Content Include="scripts\firebase.js" />
     <Content Include="scripts\i18n\angular-locale_aa-dj.js" />
@@ -803,6 +807,8 @@
     <Content Include="scripts\ionic.bundle.min.js" />
     <Content Include="scripts\ionic.js" />
     <Content Include="scripts\ionic.min.js" />
+    <Content Include="scripts\jasmine-html.js" />
+    <Content Include="scripts\jasmine.js" />
     <Content Include="templates\about.html" />
     <Content Include="templates\item.html" />
     <Content Include="templates\items.html" />
@@ -814,8 +820,12 @@
     <TypeScriptCompile Include="scripts\app\app.ts" />
     <TypeScriptCompile Include="scripts\app\constants.ts" />
     <TypeScriptCompile Include="scripts\app\controllers.ts" />
+    <TypeScriptCompile Include="scripts\app\models.ts" />
     <TypeScriptCompile Include="scripts\app\services.ts" />
+    <TypeScriptCompile Include="scripts\app\tests\constants.ts" />
+    <TypeScriptCompile Include="scripts\app\tests\services.ts" />
     <TypeScriptCompile Include="scripts\typings\angular-ui\angular-ui-router.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\angular-ui\angular-ui-sortable.d.ts" />
     <TypeScriptCompile Include="scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="scripts\typings\angularjs\angular-mocks.d.ts" />
@@ -827,6 +837,7 @@
     <TypeScriptCompile Include="scripts\typings\cordova-ionic\plugins\keyboard.d.ts" />
     <TypeScriptCompile Include="scripts\typings\firebase\firebase-simplelogin.d.ts" />
     <TypeScriptCompile Include="scripts\typings\firebase\firebase.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\jasmine\jasmine.d.ts" />
     <TypeScriptCompile Include="scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -847,6 +858,10 @@
     <Content Include="scripts\angular-animate.min.js.map" />
     <Content Include="scripts\angular.min.js.map" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme.md" />
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>

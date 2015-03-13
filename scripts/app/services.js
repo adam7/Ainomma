@@ -3,54 +3,24 @@ var ainomma;
     var services;
     (function (services) {
         var FirebaseService = (function () {
-            function FirebaseService($firebase, $rootScope, $ionicLoading, $timeout, AppSettings) {
+            function FirebaseService($firebase, $rootScope, $timeout, AppSettings, MapperService) {
                 this.$firebase = $firebase;
                 this.$rootScope = $rootScope;
-                this.$ionicLoading = $ionicLoading;
                 this.$timeout = $timeout;
                 this.AppSettings = AppSettings;
+                this.MapperService = MapperService;
             }
             FirebaseService.prototype.onChildAdded = function (snapshot) {
                 var _this = this;
                 var ref = new Firebase(this.AppSettings.itemUrl + snapshot.val());
-                ref.once("value", function (item) {
-                    _this.$timeout(function () { return _this.onGetItem(item); });
+                ref.once("value", function (response) {
+                    _this.$timeout(function () { return _this.$rootScope.items.push(_this.MapperService.mapItem(response.val())); });
                 });
-            };
-            FirebaseService.prototype.onGetItem = function (data) {
-                var val = data.val();
-                this.$rootScope.items.push({
-                    url: val.url,
-                    title: val.title,
-                    score: val.score,
-                    by: val.by,
-                    id: val.id,
-                    commentCount: val.kids ? val.kids.length : 0,
-                    iconClass: this.getIconClass(val)
-                });
-            };
-            FirebaseService.prototype.getIconClass = function (val) {
-                switch (val.type) {
-                    case "job":
-                        return "ion-cash";
-                    case "poll":
-                        return "ion-stats-bars";
-                    default:
-                        // Ask posts start with "Ask HN:"
-                        if (val.title.substring(0, 7) === "Ask HN:")
-                            return "ion-help-circled";
-                        // Show posts start with "Show HN:"
-                        if (val.title.substring(0, 8) === "Show HN:")
-                            return "ion-eye";
-                        return "ion-ios7-paper";
-                }
-                ;
             };
             FirebaseService.prototype.getStories = function (url, maxResults) {
                 var _this = this;
                 // Start with an empty array of items, this is what angular will bind to 
                 this.$rootScope.items = [];
-                console.log(url);
                 console.log(maxResults);
                 // Get a reference to the HN api
                 var ref = new Firebase(url).limitToFirst(Number(maxResults));
@@ -61,45 +31,86 @@ var ainomma;
             return FirebaseService;
         })();
         services.FirebaseService = FirebaseService;
+        var MapperService = (function () {
+            function MapperService() {
+            }
+            MapperService.prototype.mapItem = function (item) {
+                var result = new ainomma.models.Item();
+                result.url = item.url;
+                result.storyUrl = "#/item/" + item.id;
+                result.title = item.title;
+                result.text = item.text;
+                result.score = item.score;
+                result.by = item.by;
+                result.id = item.id;
+                result.commentCount = item.kids ? item.kids.length : 0;
+                result.iconClass = this.getIconClass(item);
+                return result;
+            };
+            MapperService.prototype.getIconClass = function (item) {
+                switch (item.type) {
+                    case "job":
+                        return "ion-cash";
+                    case "poll":
+                        return "ion-stats-bars";
+                    default:
+                        // Ask posts start with "Ask HN:"
+                        if (item.title.substring(0, 7) === "Ask HN:")
+                            return "ion-help-circled";
+                        // Show posts start with "Show HN:"
+                        if (item.title.substring(0, 8) === "Show HN:")
+                            return "ion-eye";
+                        return "ion-ios7-paper";
+                }
+                ;
+            };
+            return MapperService;
+        })();
+        services.MapperService = MapperService;
         var SettingsService = (function () {
             function SettingsService($window) {
                 this.$window = $window;
                 this.settingsKey = "AinommaSettings";
-                this.defaultSettings = [
-                    { 'name': 'Max Top Stories', 'value': 100 },
-                    { 'name': 'Max New Stories', 'value': 100 },
-                    { 'name': 'Max Ask Stories', 'value': 100 },
-                    { 'name': 'Max Show Stories', 'value': 100 },
-                    { 'name': 'Max Job Stories', 'value': 100 }
-                ];
             }
+            SettingsService.prototype.buildDefaultSettings = function () {
+                return [
+                    new ainomma.models.StoryTypeSetting('Max Top Stories', 100),
+                    new ainomma.models.StoryTypeSetting('Max New Stories', 100),
+                    new ainomma.models.StoryTypeSetting('Max Ask Stories', 100),
+                    new ainomma.models.StoryTypeSetting('Max Show Stories', 100),
+                    new ainomma.models.StoryTypeSetting('Max Job Stories', 100)
+                ];
+            };
             SettingsService.prototype.get = function () {
                 var settingsString = this.$window.localStorage[this.settingsKey];
-                return settingsString ? JSON.parse(settingsString) : this.defaultSettings;
+                return settingsString ? JSON.parse(settingsString) : this.buildDefaultSettings();
             };
             SettingsService.prototype.set = function (settings) {
+                console.log(settings);
                 this.$window.localStorage[this.settingsKey] = JSON.stringify(settings);
             };
-            /// TODO: Yeah I know this is nasty
+            SettingsService.prototype.getSettingValue = function (index) {
+                return this.get()[index].value;
+            };
             SettingsService.prototype.getMaxTop = function () {
-                return this.get()[0].value;
+                return this.getSettingValue(0);
             };
             SettingsService.prototype.getMaxNew = function () {
-                return this.get()[1].value;
+                return this.getSettingValue(1);
             };
             SettingsService.prototype.getMaxAsk = function () {
-                return this.get()[2].value;
+                return this.getSettingValue(2);
             };
             SettingsService.prototype.getMaxShow = function () {
-                return this.get()[3].value;
+                return this.getSettingValue(3);
             };
             SettingsService.prototype.getMaxJob = function () {
-                return this.get()[4].value;
+                return this.getSettingValue(4);
             };
             return SettingsService;
         })();
         services.SettingsService = SettingsService;
     })(services = ainomma.services || (ainomma.services = {}));
 })(ainomma || (ainomma = {}));
-angular.module('ainomma.services', ['firebase', 'ionic', 'ainomma.constants']).service('FirebaseService', ainomma.services.FirebaseService).service('SettingsService', ainomma.services.SettingsService);
+angular.module('ainomma.services', ['firebase', 'ionic', 'ainomma.constants']).service('FirebaseService', ainomma.services.FirebaseService).service('SettingsService', ainomma.services.SettingsService).service('MapperService', ainomma.services.MapperService);
 //# sourceMappingURL=services.js.map

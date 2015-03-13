@@ -3,13 +3,13 @@
 		<div class="card">
 			<div class="item item-text-wrap">
 				<h2>{{ title }}</h2>
-				<a class="subdued padding-vertical" href="{{ url }}">{{ url }}</a>
-				<p>{{ description }}</p>
 				<p>
 					{{ score }} points by <a class="subdued" href="#/user/{{ by }}">
 						<i class="icon ion-person "></i> {{ by }}
 					</a>
 				</p>
+				<a class="subdued padding-vertical" href="{{ url }}">{{ url }}</a>
+				<p ng-bind-html="text"></p>
 			</div>
 		</div>
 		<ion-list>

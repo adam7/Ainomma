@@ -1,95 +1,109 @@
 ﻿module ainomma.services {
 	export class FirebaseService {
-		constructor(private $firebase, private $rootScope, private $ionicLoading, private $timeout, private AppSettings) {
+		constructor(private $firebase, private $rootScope, private $timeout, private AppSettings, private MapperService: MapperService) {
 		}
 
-		onChildAdded(snapshot) {
+		private onChildAdded(snapshot) {
 			var ref = new Firebase(this.AppSettings.itemUrl + snapshot.val());
 
-			ref.once("value", (item) => {
-				this.$timeout(() => this.onGetItem(item));
+			ref.once("value",(response) => {
+				this.$timeout(() => this.$rootScope.items.push(this.MapperService.mapItem(response.val())));
 			});
 		}
 
-		onGetItem(data) {
-			var val = data.val();
+		getStories(url, maxResults) {
+			// Start with an empty array of items, this is what angular will bind to 
+			this.$rootScope.items = [];
+			
+			console.log(maxResults);
 
-			this.$rootScope.items.push({
-				url: val.url,
-				title: val.title,
-				score: val.score,
-				by: val.by,
-				id: val.id,
-				commentCount: val.kids ? val.kids.length : 0,
-				iconClass: this.getIconClass(val)
+			// Get a reference to the HN api
+			var ref = new Firebase(url).limitToFirst(Number(maxResults));
+
+			ref.on("child_added",(child) => {
+				this.$timeout(() => this.onChildAdded(child));
 			});
 		}
+	}
 
-		getIconClass(val) {
-			switch (val.type) {
+
+	export class MapperService {
+		mapItem(item): ainomma.models.Item {
+			var result = new ainomma.models.Item();
+
+			result.url = item.url;
+			result.storyUrl = "#/item/" + item.id;
+			result.title = item.title;
+			result.text = item.text;
+			result.score = item.score;
+			result.by = item.by;
+			result.id = item.id;
+			result.commentCount = item.kids ? item.kids.length : 0;
+			result.iconClass = this.getIconClass(item);
+
+			return result;
+		}
+
+		private getIconClass(item): string {
+			switch (item.type) {
 				case "job":
 					return "ion-cash";
 				case "poll":
 					return "ion-stats-bars";
 				default:
 					// Ask posts start with "Ask HN:"
-					if (val.title.substring(0, 7) === "Ask HN:")
-						return "ion-help-circled";
+					if (item.title.substring(0, 7) === "Ask HN:")
+						return "ion-help-circled";					
 					// Show posts start with "Show HN:"
-					if (val.title.substring(0, 8) === "Show HN:")
+					if (item.title.substring(0, 8) === "Show HN:")
 						return "ion-eye";
+
 					return "ion-ios7-paper";
 			};
 		}
-
-		public getStories(url, maxResults) {
-			// Start with an empty array of items, this is what angular will bind to 
-			this.$rootScope.items = [];
-
-			console.log(url);
-			console.log(maxResults);
-
-			// Get a reference to the HN api
-			var ref = new Firebase(url).limitToFirst(Number(maxResults));
-
-			ref.on("child_added", (child) => {
-				this.$timeout(() => this.onChildAdded(child));
-			});
-		}
 	}
+
 
 	export class SettingsService {
 		settingsKey: string = "AinommaSettings";
-		defaultSettings: Array<any> = [
-			{ 'name': 'Max Top Stories', 'value': 100 },
-			{ 'name': 'Max New Stories', 'value': 100 },
-			{ 'name': 'Max Ask Stories', 'value': 100 },
-			{ 'name': 'Max Show Stories', 'value': 100 },
-			{ 'name': 'Max Job Stories', 'value': 100 }
-		];
-		
+
 		constructor(private $window: ng.IWindowService) {
 		}
 
-		get() {
-			var settingsString = this.$window.localStorage[this.settingsKey];
-
-			return settingsString ? JSON.parse(settingsString) : this.defaultSettings;
+		buildDefaultSettings(): Array<models.StoryTypeSetting> {
+			return [
+				new models.StoryTypeSetting('Max Top Stories', 100),
+				new models.StoryTypeSetting('Max New Stories', 100),
+				new models.StoryTypeSetting('Max Ask Stories', 100),
+				new models.StoryTypeSetting('Max Show Stories', 100),
+				new models.StoryTypeSetting('Max Job Stories', 100)
+			]
 		}
 
-		set(settings) {
+		get(): Array<models.StoryTypeSetting>{
+			var settingsString = this.$window.localStorage[this.settingsKey];
+
+			return settingsString ? JSON.parse(settingsString) : this.buildDefaultSettings();
+		}
+
+		set(settings: Array<models.StoryTypeSetting>) {
+			console.log(settings);
 			this.$window.localStorage[this.settingsKey] = JSON.stringify(settings);
 		}
 
-		/// TODO: Yeah I know this is nasty
-		getMaxTop() { return this.get()[0].value; }
-		getMaxNew() { return this.get()[1].value; }
-		getMaxAsk() { return this.get()[2].value; }
-		getMaxShow() { return this.get()[3].value; }
-		getMaxJob() { return this.get()[4].value; }
+		private getSettingValue(index: number) {
+			return this.get()[index].value;
+		}
+		
+		getMaxTop() { return this.getSettingValue(0) }
+		getMaxNew() { return this.getSettingValue(1) }
+		getMaxAsk() { return this.getSettingValue(2) }
+		getMaxShow() { return this.getSettingValue(3) }
+		getMaxJob() { return this.getSettingValue(4); }
 	}
 }
 
 angular.module('ainomma.services', ['firebase', 'ionic', 'ainomma.constants'])
 	.service('FirebaseService', ainomma.services.FirebaseService)
-	.service('SettingsService', ainomma.services.SettingsService);
+	.service('SettingsService', ainomma.services.SettingsService)
+	.service('MapperService', ainomma.services.MapperService);
