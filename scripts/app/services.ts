@@ -11,7 +11,9 @@
 			});
 		}
 
-		getStories(url, maxResults) {
+		getStories(url, title, maxResults) {
+			this.$rootScope.title = title;
+
 			// Start with an empty array of items, this is what angular will bind to 
 			this.$rootScope.items = [];
 			

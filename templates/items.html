@@ -1,4 +1,7 @@
 ﻿<ion-view>
+	<ion-nav-title>
+		{{ title }}
+	</ion-nav-title>
 	<ion-content>
 		<!-- A list of news items: -->
 		<ion-list>
@@ -13,7 +16,12 @@
 						<a class="subdued padding-vertical" href="#/item/{{ item.id }}">
 							<i class="icon ion-chatboxes "></i> {{ item.commentCount }} comments
 						</a>
-						<a class="subdued ">{{ item.score }} points by {{ item.by }}</a>
+						<a class="subdued ">
+							{{ item.score }} points by
+						</a>
+						<a class="subdued" href="#/user/{{ item.by }}">
+							<i class="icon ion-person "></i> {{ item.by }}
+						</a>
 					</div>
 				</div>
 			</div>

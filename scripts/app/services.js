@@ -17,8 +17,9 @@ var ainomma;
                     _this.$timeout(function () { return _this.$rootScope.items.push(_this.MapperService.mapItem(response.val())); });
                 });
             };
-            FirebaseService.prototype.getStories = function (url, maxResults) {
+            FirebaseService.prototype.getStories = function (url, title, maxResults) {
                 var _this = this;
+                this.$rootScope.title = title;
                 // Start with an empty array of items, this is what angular will bind to 
                 this.$rootScope.items = [];
                 console.log(maxResults);

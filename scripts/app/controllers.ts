@@ -1,31 +1,31 @@
 ﻿module ainomma.controllers {
 	export class TopController {
 		constructor(private AppSettings, private FirebaseService, private SettingsService) {
-			FirebaseService.getStories(AppSettings.topUrl, SettingsService.getMaxTop());
+			FirebaseService.getStories(AppSettings.topUrl, "Top", SettingsService.getMaxTop());
 		}
 	}
 
 	export class NewController {
 		constructor(private AppSettings, private FirebaseService, private SettingsService) {
-			FirebaseService.getStories(AppSettings.newUrl, SettingsService.getMaxNew());
+			FirebaseService.getStories(AppSettings.newUrl, "New", SettingsService.getMaxNew());
 		}
 	}
 
 	export class AskController {
 		constructor(private AppSettings, private FirebaseService, private SettingsService) {
-			FirebaseService.getStories(AppSettings.askUrl, SettingsService.getMaxAsk());
+			FirebaseService.getStories(AppSettings.askUrl, "Ask HN", SettingsService.getMaxAsk());
 		}
 	}
 
 	export class ShowController {
 		constructor(private AppSettings, private FirebaseService, private SettingsService) {
-			FirebaseService.getStories(AppSettings.showUrl, SettingsService.getMaxShow());
+			FirebaseService.getStories(AppSettings.showUrl, "Show HN", SettingsService.getMaxShow());
 		}
 	}
 
 	export class JobsController {
 		constructor(private AppSettings, private FirebaseService, private SettingsService) {
-			FirebaseService.getStories(AppSettings.jobsUrl, SettingsService.getMaxJob());
+			FirebaseService.getStories(AppSettings.jobsUrl, "Jobs", SettingsService.getMaxJob());
 		}
 	}
 

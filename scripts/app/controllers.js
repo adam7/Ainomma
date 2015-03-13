@@ -7,7 +7,7 @@ var ainomma;
                 this.AppSettings = AppSettings;
                 this.FirebaseService = FirebaseService;
                 this.SettingsService = SettingsService;
-                FirebaseService.getStories(AppSettings.topUrl, SettingsService.getMaxTop());
+                FirebaseService.getStories(AppSettings.topUrl, "Top", SettingsService.getMaxTop());
             }
             return TopController;
         })();
@@ -17,7 +17,7 @@ var ainomma;
                 this.AppSettings = AppSettings;
                 this.FirebaseService = FirebaseService;
                 this.SettingsService = SettingsService;
-                FirebaseService.getStories(AppSettings.newUrl, SettingsService.getMaxNew());
+                FirebaseService.getStories(AppSettings.newUrl, "New", SettingsService.getMaxNew());
             }
             return NewController;
         })();
@@ -27,7 +27,7 @@ var ainomma;
                 this.AppSettings = AppSettings;
                 this.FirebaseService = FirebaseService;
                 this.SettingsService = SettingsService;
-                FirebaseService.getStories(AppSettings.askUrl, SettingsService.getMaxAsk());
+                FirebaseService.getStories(AppSettings.askUrl, "Ask HN", SettingsService.getMaxAsk());
             }
             return AskController;
         })();
@@ -37,7 +37,7 @@ var ainomma;
                 this.AppSettings = AppSettings;
                 this.FirebaseService = FirebaseService;
                 this.SettingsService = SettingsService;
-                FirebaseService.getStories(AppSettings.showUrl, SettingsService.getMaxShow());
+                FirebaseService.getStories(AppSettings.showUrl, "Show HN", SettingsService.getMaxShow());
             }
             return ShowController;
         })();
@@ -47,7 +47,7 @@ var ainomma;
                 this.AppSettings = AppSettings;
                 this.FirebaseService = FirebaseService;
                 this.SettingsService = SettingsService;
-                FirebaseService.getStories(AppSettings.jobsUrl, SettingsService.getMaxJob());
+                FirebaseService.getStories(AppSettings.jobsUrl, "Jobs", SettingsService.getMaxJob());
             }
             return JobsController;
         })();
