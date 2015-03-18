@@ -3,9 +3,8 @@ var ainomma;
     var services;
     (function (services) {
         var FirebaseService = (function () {
-            function FirebaseService($firebase, $rootScope, $timeout, AppSettings, MapperService) {
+            function FirebaseService($firebase, $timeout, AppSettings, MapperService) {
                 this.$firebase = $firebase;
-                this.$rootScope = $rootScope;
                 this.$timeout = $timeout;
                 this.AppSettings = AppSettings;
                 this.MapperService = MapperService;
@@ -14,20 +13,21 @@ var ainomma;
                 var _this = this;
                 var ref = new Firebase(this.AppSettings.itemUrl + snapshot.val());
                 ref.once("value", function (response) {
-                    _this.$timeout(function () { return _this.$rootScope.items.push(_this.MapperService.mapItem(response.val())); });
+                    _this.$timeout(function () { return _this.$scope.items.push(_this.MapperService.mapItem(response.val())); });
                 });
             };
-            FirebaseService.prototype.getStories = function (url, title, maxResults) {
+            FirebaseService.prototype.getStories = function (url, title, maxResults, scope) {
                 var _this = this;
-                this.$rootScope.title = title;
+                this.$scope = scope;
+                this.$scope.title = title + " (" + maxResults + ")";
                 // Start with an empty array of items, this is what angular will bind to 
-                this.$rootScope.items = [];
-                console.log(maxResults);
+                this.$scope.items = [];
                 // Get a reference to the HN api
                 var ref = new Firebase(url).limitToFirst(Number(maxResults));
                 ref.on("child_added", function (child) {
                     _this.$timeout(function () { return _this.onChildAdded(child); });
                 });
+                this.$scope.$broadcast('scroll.refreshComplete');
             };
             return FirebaseService;
         })();
@@ -87,7 +87,6 @@ var ainomma;
                 return settingsString ? JSON.parse(settingsString) : this.buildDefaultSettings();
             };
             SettingsService.prototype.set = function (settings) {
-                console.log(settings);
                 this.$window.localStorage[this.settingsKey] = JSON.stringify(settings);
             };
             SettingsService.prototype.getSettingValue = function (index) {

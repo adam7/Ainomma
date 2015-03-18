@@ -1,30 +1,34 @@
 ﻿module ainomma.services {
 	export class FirebaseService {
-		constructor(private $firebase, private $rootScope, private $timeout, private AppSettings, private MapperService: MapperService) {
+		private $scope;
+
+		constructor(private $firebase, private $timeout, private AppSettings, private MapperService: MapperService) {
 		}
 
 		private onChildAdded(snapshot) {
 			var ref = new Firebase(this.AppSettings.itemUrl + snapshot.val());
 
 			ref.once("value",(response) => {
-				this.$timeout(() => this.$rootScope.items.push(this.MapperService.mapItem(response.val())));
+				this.$timeout(() => this.$scope.items.push(this.MapperService.mapItem(response.val())));
 			});
 		}
 
-		getStories(url, title, maxResults) {
-			this.$rootScope.title = title;
+		getStories(url, title, maxResults, scope: ng.IScope) {
+			this.$scope = scope;
+			
+			this.$scope.title = title + " (" + maxResults + ")";
 
 			// Start with an empty array of items, this is what angular will bind to 
-			this.$rootScope.items = [];
+			this.$scope.items = [];
 			
-			console.log(maxResults);
-
 			// Get a reference to the HN api
 			var ref = new Firebase(url).limitToFirst(Number(maxResults));
 
 			ref.on("child_added",(child) => {
 				this.$timeout(() => this.onChildAdded(child));
 			});
+
+			this.$scope.$broadcast('scroll.refreshComplete');
 		}
 	}
 
@@ -89,7 +93,6 @@
 		}
 
 		set(settings: Array<models.StoryTypeSetting>) {
-			console.log(settings);
 			this.$window.localStorage[this.settingsKey] = JSON.stringify(settings);
 		}
 

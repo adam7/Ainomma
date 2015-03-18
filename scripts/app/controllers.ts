@@ -1,31 +1,56 @@
 ﻿module ainomma.controllers {
-	export class TopController {
-		constructor(private AppSettings, private FirebaseService, private SettingsService) {
-			FirebaseService.getStories(AppSettings.topUrl, "Top", SettingsService.getMaxTop());
+	export class TopController{
+		constructor(protected AppSettings, protected FirebaseService, protected SettingsService, protected $scope) {
+			this.$scope.onRefresh = this.onRefresh;
+			this.onRefresh();
+		}
+
+		onRefresh = () => {
+			this.FirebaseService.getStories(this.AppSettings.topUrl, "Top", this.SettingsService.getMaxTop(), this.$scope);
 		}
 	}
 
 	export class NewController {
-		constructor(private AppSettings, private FirebaseService, private SettingsService) {
-			FirebaseService.getStories(AppSettings.newUrl, "New", SettingsService.getMaxNew());
+		constructor(protected AppSettings, protected FirebaseService, protected SettingsService, protected $scope) {
+			this.$scope.onRefresh = this.onRefresh;
+			this.onRefresh();
+		}
+
+		onRefresh = () => {
+			this.FirebaseService.getStories(this.AppSettings.newUrl, "New", this.SettingsService.getMaxNew(), this.$scope);
 		}
 	}
 
 	export class AskController {
-		constructor(private AppSettings, private FirebaseService, private SettingsService) {
-			FirebaseService.getStories(AppSettings.askUrl, "Ask HN", SettingsService.getMaxAsk());
+		constructor(protected AppSettings, protected FirebaseService, protected SettingsService, protected $scope) {
+			this.$scope.onRefresh = this.onRefresh;
+			this.onRefresh();
+		}
+
+		onRefresh = () => {
+			this.FirebaseService.getStories(this.AppSettings.askUrl, "Ask HN", this.SettingsService.getMaxAsk(), this.$scope);
 		}
 	}
 
 	export class ShowController {
-		constructor(private AppSettings, private FirebaseService, private SettingsService) {
-			FirebaseService.getStories(AppSettings.showUrl, "Show HN", SettingsService.getMaxShow());
+		constructor(protected AppSettings, protected FirebaseService, protected SettingsService, protected $scope) {
+			this.$scope.onRefresh = this.onRefresh;
+			this.onRefresh();
+		}
+
+		onRefresh = () => {
+			this.FirebaseService.getStories(this.AppSettings.showUrl, "Show HN", this.SettingsService.getMaxShow(), this.$scope);
 		}
 	}
 
-	export class JobsController {
-		constructor(private AppSettings, private FirebaseService, private SettingsService) {
-			FirebaseService.getStories(AppSettings.jobsUrl, "Jobs", SettingsService.getMaxJob());
+	export class JobsController{
+		constructor(protected AppSettings, protected FirebaseService, protected SettingsService, protected $scope) {
+			this.$scope.onRefresh = this.onRefresh;
+			this.onRefresh();
+		}
+
+		onRefresh = () => {
+			this.FirebaseService.getStories(this.AppSettings.jobsUrl, "Jobs", this.SettingsService.getMaxJob(), this.$scope);
 		}
 	}
 
@@ -53,11 +78,18 @@
 		firebase: Firebase;
 
 		constructor(private $firebase, private $scope, private $stateParams, private $timeout, private AppSettings) {
-			this.firebase = new Firebase(AppSettings.itemUrl + $stateParams.itemId);
+			this.$scope.onRefresh = () => { this.onRefresh() };
+			this.onRefresh();
+		}
+
+		onRefresh() {
+			this.firebase = new Firebase(this.AppSettings.itemUrl + this.$stateParams.itemId);
 
 			this.firebase.once("value",(item) => {
 				this.$timeout(() => this.onGetItem(item));
 			});
+
+			this.$scope.$broadcast('scroll.refreshComplete');
 		}
 
 		onGetItem(data) {

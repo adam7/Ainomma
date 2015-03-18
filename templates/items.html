@@ -3,6 +3,8 @@
 		{{ title }}
 	</ion-nav-title>
 	<ion-content>
+		<ion-refresher pulling-text="Pull to refresh" on-refresh="onRefresh()">
+		</ion-refresher>
 		<!-- A list of news items: -->
 		<ion-list>
 			<div class="list card" ng-repeat="item in items">

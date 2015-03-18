@@ -3,51 +3,81 @@ var ainomma;
     var controllers;
     (function (controllers) {
         var TopController = (function () {
-            function TopController(AppSettings, FirebaseService, SettingsService) {
+            function TopController(AppSettings, FirebaseService, SettingsService, $scope) {
+                var _this = this;
                 this.AppSettings = AppSettings;
                 this.FirebaseService = FirebaseService;
                 this.SettingsService = SettingsService;
-                FirebaseService.getStories(AppSettings.topUrl, "Top", SettingsService.getMaxTop());
+                this.$scope = $scope;
+                this.onRefresh = function () {
+                    _this.FirebaseService.getStories(_this.AppSettings.topUrl, "Top", _this.SettingsService.getMaxTop(), _this.$scope);
+                };
+                this.$scope.onRefresh = this.onRefresh;
+                this.onRefresh();
             }
             return TopController;
         })();
         controllers.TopController = TopController;
         var NewController = (function () {
-            function NewController(AppSettings, FirebaseService, SettingsService) {
+            function NewController(AppSettings, FirebaseService, SettingsService, $scope) {
+                var _this = this;
                 this.AppSettings = AppSettings;
                 this.FirebaseService = FirebaseService;
                 this.SettingsService = SettingsService;
-                FirebaseService.getStories(AppSettings.newUrl, "New", SettingsService.getMaxNew());
+                this.$scope = $scope;
+                this.onRefresh = function () {
+                    _this.FirebaseService.getStories(_this.AppSettings.newUrl, "New", _this.SettingsService.getMaxNew(), _this.$scope);
+                };
+                this.$scope.onRefresh = this.onRefresh;
+                this.onRefresh();
             }
             return NewController;
         })();
         controllers.NewController = NewController;
         var AskController = (function () {
-            function AskController(AppSettings, FirebaseService, SettingsService) {
+            function AskController(AppSettings, FirebaseService, SettingsService, $scope) {
+                var _this = this;
                 this.AppSettings = AppSettings;
                 this.FirebaseService = FirebaseService;
                 this.SettingsService = SettingsService;
-                FirebaseService.getStories(AppSettings.askUrl, "Ask HN", SettingsService.getMaxAsk());
+                this.$scope = $scope;
+                this.onRefresh = function () {
+                    _this.FirebaseService.getStories(_this.AppSettings.askUrl, "Ask HN", _this.SettingsService.getMaxAsk(), _this.$scope);
+                };
+                this.$scope.onRefresh = this.onRefresh;
+                this.onRefresh();
             }
             return AskController;
         })();
         controllers.AskController = AskController;
         var ShowController = (function () {
-            function ShowController(AppSettings, FirebaseService, SettingsService) {
+            function ShowController(AppSettings, FirebaseService, SettingsService, $scope) {
+                var _this = this;
                 this.AppSettings = AppSettings;
                 this.FirebaseService = FirebaseService;
                 this.SettingsService = SettingsService;
-                FirebaseService.getStories(AppSettings.showUrl, "Show HN", SettingsService.getMaxShow());
+                this.$scope = $scope;
+                this.onRefresh = function () {
+                    _this.FirebaseService.getStories(_this.AppSettings.showUrl, "Show HN", _this.SettingsService.getMaxShow(), _this.$scope);
+                };
+                this.$scope.onRefresh = this.onRefresh;
+                this.onRefresh();
             }
             return ShowController;
         })();
         controllers.ShowController = ShowController;
         var JobsController = (function () {
-            function JobsController(AppSettings, FirebaseService, SettingsService) {
+            function JobsController(AppSettings, FirebaseService, SettingsService, $scope) {
+                var _this = this;
                 this.AppSettings = AppSettings;
                 this.FirebaseService = FirebaseService;
                 this.SettingsService = SettingsService;
-                FirebaseService.getStories(AppSettings.jobsUrl, "Jobs", SettingsService.getMaxJob());
+                this.$scope = $scope;
+                this.onRefresh = function () {
+                    _this.FirebaseService.getStories(_this.AppSettings.jobsUrl, "Jobs", _this.SettingsService.getMaxJob(), _this.$scope);
+                };
+                this.$scope.onRefresh = this.onRefresh;
+                this.onRefresh();
             }
             return JobsController;
         })();
@@ -82,11 +112,19 @@ var ainomma;
                 this.$stateParams = $stateParams;
                 this.$timeout = $timeout;
                 this.AppSettings = AppSettings;
-                this.firebase = new Firebase(AppSettings.itemUrl + $stateParams.itemId);
+                this.$scope.onRefresh = function () {
+                    _this.onRefresh();
+                };
+                this.onRefresh();
+            }
+            ItemController.prototype.onRefresh = function () {
+                var _this = this;
+                this.firebase = new Firebase(this.AppSettings.itemUrl + this.$stateParams.itemId);
                 this.firebase.once("value", function (item) {
                     _this.$timeout(function () { return _this.onGetItem(item); });
                 });
-            }
+                this.$scope.$broadcast('scroll.refreshComplete');
+            };
             ItemController.prototype.onGetItem = function (data) {
                 var val = data.val();
                 this.$scope.title = val.title, this.$scope.text = val.text, this.$scope.by = val.by, this.$scope.score = val.score, this.$scope.description = val.description, this.$scope.url = val.url, this.$scope.comments = [];

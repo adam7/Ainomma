@@ -130,7 +130,8 @@
 
 				var result = settingsService.get();
 
-				expect(defaultSettings).toMatch(result);
+				// Using angular.equals for comparison because toEqual will fail due to added angular properties
+				expect(angular.equals(defaultSettings, result)).toBe(true);				
 			});
 		});
 
@@ -148,7 +149,8 @@
 
 				settingsService.set(newSettings);
 
-				expect(newSettings).toMatch(settingsService.get());
+				// Using angular.equals for comparison because toEqual will fail due to added angular properties
+				expect(angular.equals(newSettings, settingsService.get())).toBe(true);				
 			});
 		});
 	});
